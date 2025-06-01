@@ -22,3 +22,7 @@ Feature selection was further refined using Recursive Feature Elimination (RFE),
 The project also explored enhancements like hyperparameter tuning through grid search and visual interfaces using Streamlit for interactive prediction. Despite minor technical challenges, the overall outcome was a robust and interpretable machine learning system that can support civil engineers in designing more effective concrete mixes. This project demonstrates the strong synergy between data science and civil engineering, emphasizing both predictive power and transparency in results.
 
 OUTPUT ---
+![Image](https://github.com/user-attachments/assets/9b4e026f-80a6-49ac-b465-e9ad4c3faf9d)
+![Image](https://github.com/user-attachments/assets/26ece25a-2214-44fa-b4f8-a5cf1931b2ac)
+![Image](https://github.com/user-attachments/assets/e6218996-75dc-4718-9f58-501414a1d284)
+![Image](https://github.com/user-attachments/assets/2624fc12-d278-4327-9605-e1fb934a5758)
