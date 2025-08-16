@@ -72,7 +72,7 @@ plt.xlabel("Actual Values")
 plt.ylabel("Predicted Values")
 plt.show()
 
-
+var = np.var(y_test,ddof = 0)
 # Creating a DataFrame for actual and predicted values
 results_df = pd.DataFrame({
     'Actual Compressive Strength': y_test,
@@ -143,9 +143,42 @@ rmse_gb = np.sqrt(mse_gb)
 
 print(f"Gradient Boosting - Mean Squared Error: {mse_gb}")
 print(f"Gradient Boosting - Root Mean Squared Error: {rmse_gb}")
+
+param_grid2 = {
+    'n_estimators': [100, 200, 300, 500],
+    'learning_rate': [0.01, 0.05, 0.1, 0.2],
+    'max_depth': [3, 5, 7, 9],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4],
+    'subsample': [0.8, 1.0]
+}
+rf_random = RandomizedSearchCV(estimator=gb_model, param_distributions=param_grid2, 
+                               n_iter=50, cv=5, verbose=2, random_state=42, n_jobs=-1)
+
+# Fit the random search model
+rf_random.fit(X_train_scaled, y_train)
+
+# Best parameters from Randomized Search
+print(f"Best Parameters: {rf_random.best_params_}")
+
+# Evaluate with the best model
+best_model = rf_random.best_estimator_
+y_pred_best = best_model.predict(X_test_scaled)
+
+# Calculate new metrics with the best model
+mse_best_gb = mean_squared_error(y_test, y_pred_best)
+rmse_best_gb = np.sqrt(mse_best_gb)
+
+
+print(f"Improved Mean Squared Error GB: {mse_best_gb}")
+print(f"Improved Root Mean Squared Error GB: {rmse_best_gb}")
+# ACCURACY SCORE #
+r2_score = 1-(mse_best_gb/var)
+
+print(f"Accuracy:{r2_score}")
 results2_df = pd.DataFrame({
     'Actual Compressive Strength': y_test,
-    'Predicted Compressive Strength': y_pred_gb
+    'Predicted Compressive Strength': y_pred_best
 })
 
 # Saving to an Excel file
@@ -230,6 +263,6 @@ print(feature_ranking_df)
 X_selected = X.loc[:, rfe.support_]
 print("\nSelected Features DataFrame:")
 print(X_selected.head())
-feature_ranking = feature_ranking_df.to_excel("Ranking of features.xlsx",index=False)
-Selected_Features = X_selected.to_excel("Selected Features acc to importance.xlsx",index=False)
+feature_ranking = feature_ranking_df.to_excel("Ranking of features",index=False)
+Selected_Features = X_selected.to_excel("Selected Features acc to importance",index=False)
 #----------------------------------THANK YOU---------------------------------------------#
